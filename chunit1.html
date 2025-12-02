@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CH 110: Introduction to General Chemistry</title>
+    
+    <style>
+        /* Define color variables for consistency (using the original blue palette) */
+        :root {
+            --color-blue-50: #eff6ff;
+            --color-blue-100: #dbeafe;
+            --color-blue-200: #bfdbfe;
+            --color-blue-500: #3b82f6;
+            --color-blue-600: #2563eb;
+            --color-blue-700: #1d4ed8;
+            --color-blue-800: #1e40af;
+            --color-slate-50: #f8fafc;
+            --color-slate-200: #e2e8f0;
+            --color-slate-300: #cbd5e1;
+            --color-gray-600: #4b5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1f2937;
+            --color-gray-900: #111827;
+        }
+
+        /* General Setup */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: black;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-wrapper {
+            min-height: 100vh;
+            padding: 3rem 1rem;
+        }
+
+        /* Container & Card Styling */
+        .container-notes {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 2.5rem;
+            border: 1px solid var(--color-slate-200);
+        }
+
+        /* Typography and Headings */
+        h1, h2, h3 {
+            font-family: 'Georgia', serif;
+            color: var(--color-gray-900);
+        }
+
+        h1 {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            margin-top: 0.25rem;
+        }
+        
+        @media (min-width: 640px) { /* sm: */
+            h1 {
+                font-size: 3rem; /* sm:text-5xl */
+            }
+        }
+
+        h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: var(--color-gray-800);
+            border-bottom: 2px solid var(--color-blue-500);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            color: var(--color-gray-800);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h4 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: var(--color-gray-800);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-slate-300);
+        }
+        
+        header .subtitle {
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 600; /* font-semibold */
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* tracking-wider */
+            color: var(--color-blue-600);
+        }
+
+        header .description {
+            margin-top: 0.75rem;
+            font-size: 1.125rem; /* text-lg */
+            color: var(--color-gray-600);
+        }
+
+        p {
+            color: var(--color-gray-700);
+            margin-top: 1rem;
+        }
+        
+        /* Navigation (TOC) */
+        .toc-nav {
+            margin-bottom: 2.5rem;
+            background-color: var(--color-blue-50);
+            border: 1px solid var(--color-blue-200);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.875rem; /* text-sm */
+            color: var(--color-gray-700);
+        }
+        
+        .toc-nav .toc-title {
+            font-weight: 700; /* font-bold */
+            color: var(--color-blue-700);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.25rem 1rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        @media (min-width: 640px) { /* sm: */
+            .toc-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .toc-list a {
+            color: var(--color-gray-700);
+            text-decoration: none;
+            transition: color 0.15s ease-in-out;
+        }
+        
+        .toc-list a:hover {
+            color: var(--color-blue-600);
+        }
+
+        /* List Styles */
+        ul.simple-list, ol.numbered-list {
+            list-style: disc;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            color: var(--color-gray-700);
+        }
+        
+        ol.numbered-list {
+            list-style: decimal;
+        }
+
+        /* Custom bullet points */
+        .list-style-none {
+            list-style: none;
+            padding-left: 0;
+        }
+        .list-style-none > li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+        .list-style-none > li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-blue-700);
+            font-weight: bold;
+        }
+        
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-slate-300);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            max-width: 100%; /* For responsiveness */
+        }
+        
+        table {
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem; /* text-sm */
+            line-height: 1.25rem;
+        }
+
+        thead {
+            background-color: var(--color-slate-100);
+            border-bottom: 1px solid var(--color-slate-200);
+        }
+
+        th {
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem; /* text-xs */
+            font-weight: 700; /* font-bold */
+            color: var(--color-gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* tracking-wider */
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            background-color: white;
+            border-bottom: 1px solid var(--color-slate-200);
+            color: var(--color-gray-700);
+        }
+        
+        /* Solved Problem Styles */
+        .solution-box {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: var(--color-blue-50);
+            border: 1px solid var(--color-blue-200);
+            border-radius: 0.5rem;
+        }
+        
+        .solution-box .solution-title {
+            font-weight: 500; /* font-medium */
+            color: var(--color-blue-800);
+        }
+        
+        .math-block {
+            font-family: monospace;
+            font-size: 1.05rem;
+            color: var(--color-gray-800);
+            background-color: var(--color-slate-100);
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            margin-top: 0.5rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .zen{
+            background-color: blue;
+            
+            padding: 10px 30px;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+            font-size: 0.9rem;
+        }
+
+        .zen:hover {
+            background-color: #3341b8;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="container-notes">
+
+            <!-- Title and Header -->
+            <header>
+                
+                    
+                    <a class="zen" style="color: whitesmoke; text-decoration: none; font-weight: 600;" href="chem.html">back</a>
+                
+                
+                <p class="subtitle">CH 110 - Introduction to General Chemistry</p>
+                <h1>
+                    Chapter 1: Matter, Measurement, and Fundamentals
+                </h1>
+                <p class="description">
+                    Core concepts covering the classification and properties of matter, atomic theory, measurement techniques, and the scientific method.
+                </p>
+            </header>
+
+            <!-- Table of Contents -->
+            <nav class="toc-nav">
+                <p class="toc-title">Table of Contents</p>
+                <ul class="toc-list">
+                    <li><a href="#section-scientific-method">1. The Scientific Method</a></li>
+                    <li><a href="#section-dalton-theory">2. Dalton's Atomic Theory</a></li>
+                    <li><a href="#section-classification-matter">3. Classification and Properties of Matter</a></li>
+                    <li><a href="#section-measurement">4. The SI System and Measurement</a></li>
+                    <li><a href="#section-dimensional-analysis">5. Dimensional Analysis (The Unit Factor Method)</a></li>
+                </ul>
+            </nav>
+
+
+            <!-- Section 1: The Scientific Method (Detailed) -->
+            <section id="section-scientific-method" class="mb-12">
+                <h2>1. The Scientific Method</h2>
+
+                <p>
+                    The Scientific Method is a systematic, logical approach to discovering how things in the universe work. It's the foundation of all chemistry (and science generally), ensuring results are testable, reproducible, and reliable.
+                </p>
+
+                <h3>1.1 Steps of the Method </h3>
+                <ol class="numbered-list">
+                    <li>
+                        <b>Observation:</b> Notice something interesting. This can be qualitative (descriptive) or quantitative (numerical measurement).
+                        <p style="margin-top: 0.25rem; font-style: italic;">Example: The sky is blue (Qualitative). The metal strip weighs 10.0 kg (Quantitative).</p>
+                    </li>
+                    <li>
+                        <b>Hypothesis:</b>this is a testable, possible explanation to an observation.
+                        <p style="margin-top: 0.25rem; font-style: italic;">Example: "If I heat the metal strip, then it will melt at 150."</p>
+                    </li>
+                    <li>
+                        <b>Experiment:</b> Design and perform an investigation to test the hypothesis. Experiments must be controlled and must produce repeatable data.
+                        <p style="margin-top: 0.25rem; font-style: italic;">Example: Heat the metal strip while measuring its temperature with a thermometer.</p>
+                    </li>
+                    <li>
+                        <b>Conclusion/Revision:</b> Analyze the data. If the data supports the hypothesis, you gain confidence. If the data refutes the hypothesis, the hypothesis must be revised and retested.
+                    </li>
+                </ol>
+
+                <h3>1.2 Laws and Theories</h3>
+                <ul class="list-style-none">
+                    <li><b>Scientific Law:</b> Describes *what* happens under certain conditions, often with a mathematical formula. It summarizes observations but doesn't explain *why*. (e.g., Law of Conservation of Mass: $\text{Mass}_{\text{reactants}} = \text{Mass}_{\text{products}}$).</li>
+                    <li><b>Scientific Theory:</b> Explains *why* nature behaves the way it does. It is a broad, tested explanation that unifies many related observations and laws. (e.g., Dalton's Atomic Theory explains the Law of Conservation of Mass).</li>
+                </ul>
+            </section>
+
+            <!-- Section 2: Dalton's Atomic Theory -->
+            <section id="section-dalton-theory" class="mb-12">
+                <h2>2. Dalton's Atomic Theory (1803)</h2>
+
+                <p>
+                    John Dalton's theory was the first comprehensive model describing matter as being composed of tiny, indivisible particles called atoms. It is the basis of modern chemistry.
+                </p>
+
+                <h3>2.1 The Four Main Postulates (Simplified)</h3>
+                <ul class="simple-list">
+                    <li>
+                        <b>Matter is made of Atoms:</b> All matter is composed of extremely small, indivisible particles called atoms. (Modern change: Atoms *are* divisible into subatomic particles.)
+                    </li>
+                    <li>
+                        <b>Atoms of the Same Element are Identical:</b> All atoms of a given element are identical in size, mass, and other properties; atoms of different elements differ in these properties. (Modern change: Isotopes exist, which are atoms of the same element with different masses.)
+                    </li>
+                    <li>
+                        <b>Atoms Cannot Be Created or Destroyed:</b> Atoms cannot be created or destroyed, nor can they be converted into atoms of other elements. Chemical reactions simply rearrange how atoms are grouped. (This explains the **Law of Conservation of Mass**.)
+                    </li>
+                    <li>
+                        <b>Compounds are Formed by Combining Atoms:</b> Atoms of different elements combine in simple whole-number ratios to form chemical compounds. (This explains the **Law of Definite Proportions** and the **Law of Multiple Proportions**.)
+                    </li>
+                </ul>
+
+                <h4>Key Laws Explained by Dalton</h4>
+                <p>
+                    Dalton's theory successfully explained the foundational laws of chemistry:
+                </p>
+                <ul class="list-style-none">
+                    <li><b>Law of Conservation of Mass:</b> Since atoms are not created or destroyed in a reaction (Postulate 3), the total mass of the system remains constant.</li>
+                    <li><b>Law of Definite Proportions:</b> Any compound is formed by specific atoms combined in a fixed ratio (Postulate 4). For example, water is *always* 8 parts oxygen to 1 part hydrogen by mass.</li>
+                </ul>
+            </section>
+
+            <!-- Section 3: Classification and Properties of Matter (Summarized) -->
+            <section id="section-classification-matter" class="mb-12">
+                <h2>3. Classification and Properties of Matter</h2>
+
+                <h3>3.1 Classification of Matter</h3>
+                <ul class="list-style-none">
+                    <li><b>Substances:</b> Fixed composition and properties (Elements and Compounds).</li>
+                    <li><b>Mixtures:</b> Variable composition; components retain their properties.
+                        <ul>
+                            <li><b>Homogeneous:</b> Uniform mixture (e.g., saltwater).</li>
+                            <li><b>Heterogeneous:</b> Non-uniform mixture (e.g., sand and water).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>3.2 Properties and Changes</h3>
+                <ul class="list-style-none">
+                    <li><b>Physical Property/Change:</b> Can be observed without changing identity (e.g., melting, boiling, density).</li>
+                    <li><b>Chemical Property/Change:</b> Describes how a substance changes into a new substance (e.g., flammability, rusting, burning).</li>
+                    <li><b>Extensive Property:</b> Depends on the amount of matter (e.g., mass, volume).</li>
+                    <li><b>Intensive Property:</b> Independent of the amount of matter (e.g., density, temperature, melting point).</li>
+                </ul>
+            </section>
+
+            <!-- Section 4: The SI System and Measurement (Summarized) -->
+            <section id="section-measurement" class="mb-12">
+                <h2>4. The SI System and Measurement</h2>
+
+                <h3>4.1 Fundamental SI Units (Base Units)</h3>
+                
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Physical Quantity</th>
+                                <th>SI Unit</th>
+                                <th>Symbol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Length</td><td>Metre</td><td>m</td></tr>
+                            <tr><td>Mass</td><td>Kilogram</td><td>kg</td></tr>
+                            <tr><td>Time</td><td>Second</td><td>s</td></tr>
+                            <tr><td>Temperature</td><td>Kelvin</td><td>K</td></tr>
+                            <tr><td>Amount of Substance</td><td>Mole</td><td>mol</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>4.2 Derived Units</h3>
+                <ul class="list-style-none">
+                    <li><b>Volume:</b> Derived from length cubed ($\text{m}^3$). Common in lab: Litre (L), where $1 \text{ L} = 1 \text{ dm}^3$ and $1 \text{ mL} = 1 \text{ cm}^3$.</li>
+                    <li><b>Density ($\rho$):</b> Mass per unit volume ($\rho = \text{mass}/\text{volume}$). Units: $\text{g}/\text{mL}$ or $\text{g}/\text{cm}^3$.</li>
+                </ul>
+            </section>
+
+            <!-- Section 5: Dimensional Analysis -->
+            <section id="section-dimensional-analysis" class="mb-12">
+                <h2>5. Dimensional Analysis (The Unit Factor Method)</h2>
+                
+                <p>
+                    Dimensional analysis is a problem-solving method where units are included in all calculations. It ensures that the final answer has the correct unit by converting the starting unit to the required final unit using conversion factors.
+                </p>
+
+                <h3>5.1 Conversion Factors (Unit Factors)</h3>
+                <p>
+                    A conversion factor is a ratio derived from the equality between two different units. Since the two values in the ratio are equivalent, multiplying by the factor is the same as multiplying by one, which doesn't change the value of the quantity, only its unit.
+                </p>
+                <p style="margin-top: 0.25rem;">
+                    If you know that $1 \text{ inch} = 2.54 \text{ cm}$, you can write two conversion factors:
+                </p>
+                <div class="math-block" style="font-size: 0.95rem;">
+                    $$\frac{1 \text{ inch}}{2.54 \text{ cm}}\quad \text{ or } \quad \frac{2.54 \text{ cm}}{1 \text{ inch}}$$
+                </div>
+
+                <h3>5.2 The Process</h3>
+                <p>
+                    You arrange the conversion factor(s) so that the unwanted (starting) unit cancels out, leaving only the desired (final) unit.
+                </p>
+                <div class="math-block" style="font-size: 0.95rem;">
+                    $$\text{Starting Quantity} \times \frac{\text{Desired Unit}}{\text{Starting Unit}} = \text{Final Quantity (Desired Unit)}$$
+                </div>
+                
+                <ol class="numbered-list">
+                    <li>Identify the starting unit and the desired final unit.</li>
+                    <li>Find the conversion factors that connect the starting unit to the desired unit.</li>
+                    <li>Set up the calculation so that all units except the desired unit cancel out (starting unit must be in the denominator of the conversion factor).</li>
+                    <li>Perform the multiplication and division.</li>
+                </ol>
+
+                <p class="solution-title" style="font-weight: 700; color: var(--color-gray-900);">Example Problem (Dimensional Analysis):</p>
+                <p style="margin-top: 0.25rem;">How many meters are in $3.5 \text{ miles}$? (Use the conversion: $1 \text{ mile} = 1.609 \text{ km}$ and $1 \text{ km} = 1000 \text{ m}$)</p>
+                <div class="solution-box">
+                    <p class="solution-title" style="margin-top: 0;">Solution:</p>
+                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">We need to convert $\text{miles} \rightarrow \text{km} \rightarrow \text{m}$.</p>
+                    <div class="math-block">
+                        $$3.5 \text{ miles} \times \frac{1.609 \text{ km}}{1 \text{ mile}} \times \frac{1000 \text{ m}}{1 \text{ km}}$$
+                        
+                        $$\text{Calculation: } 3.5 \times 1.609 \times 1000 = 5631.5$$
+                    </div>
+                    <p style="margin-top: 0.5rem; color: var(--color-gray-800); font-weight: 700;">
+                        The result is $5631.5 \text{ m}$. (Notice how $\text{miles}$ and $\text{km}$ units cancel out.)
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOBA - Subject Dashboard</title>
+    <style>
+        /* Base styles and variables */
+        :root {
+            --primary-color: #0d6efd; /* A strong blue for highlights */
+            --text-light: #f3f4f6; /* Off-white text */
+            --card-bg: #1f2937; /* Dark gray for cards */
+            --hover-shadow: 0 10px 25px rgba(13, 110, 253, 0.4);
+            --transition-speed: 0.3s;
+        }
+
+        /* Global Reset for better responsiveness */
+        *, *::before, *::after {
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #000000; /* Body background black */
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px; /* Space for the fixed navbar */
+        }
+
+        /* --- Navigation Bar (Nav) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        /* Base style for nav links that are NOT buttons */
+        .nav-links a:not(.nav-btn) {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .nav-links a:not(.nav-btn):hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(13, 110, 253, 0.6);
+        }
+        
+        /* Highlighted Button Styles for Register and Login */
+        .nav-links .nav-btn {
+            margin-left: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+            border: 2px solid transparent; /* Base border for spacing */
+        }
+        
+        /* Register Button (Primary/Filled) */
+        .nav-links .register-btn {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+        }
+
+        .nav-links .register-btn:hover {
+            background-color: #0b5ed7; 
+            box-shadow: 0 0 15px rgba(13, 110, 253, 0.8);
+            transform: translateY(-1px);
+        }
+
+        /* Login Button (Secondary/Outline) */
+        .nav-links .login-btn {
+            background-color: transparent;
+            border-color: var(--primary-color); 
+            color: var(--primary-color);
+        }
+
+        .nav-links .login-btn:hover {
+            background-color: var(--primary-color);
+            color: #000000; 
+            box-shadow: 0 0 15px rgba(13, 110, 253, 0.6);
+            transform: translateY(-1px);
+        }
+
+
+        /* --- Main Content and Cards --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .subject-grid {
+            /* This property makes the grid automatically responsive */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; /* Ensure content is spaced, pushing the button to the bottom */
+            position: relative; /* Needed for positioning the pseudo-element */
+            overflow: hidden; /* Ensures the pseudo-element doesn't spill out */
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px; /* Width of the "shadow figure" */
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(13, 110, 253, 0), rgba(13, 110, 253, 0.05), rgba(13, 110, 253, 0)); /* Very subtle fade */
+            border-radius: 1rem 0 0 1rem; /* Match card border radius on left side */
+            transition: background var(--transition-speed), box-shadow var(--transition-speed);
+            pointer-events: none; /* Allows clicks to pass through to the card */
+        }
+
+        .card:hover::before {
+            background: linear-gradient(to bottom, rgba(13, 110, 253, 0.2), rgba(13, 110, 253, 0.8), rgba(13, 110, 253, 0.2)); /* Brighter blue on hover */
+            box-shadow: 0 0 15px rgba(13, 110, 253, 0.8); /* Glow effect */
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+            border-color: var(--primary-color);
+        }
+
+        .card-content {
+            flex-grow: 1; /* Allows the content area to expand */
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            /* Using inline SVG/Emoji for icons as we can't import FontAwesome */
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .card p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0; /* Clear margin bottom before button */
+        }
+
+        /* Button Styles for "View Topics" */
+        .card-button {
+            display: inline-block;
+            margin-top: 1.5rem; /* Space above the button */
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed), transform var(--transition-speed);
+            font-size: 1rem;
+            width: 100%; /* Make button full width within card padding */
+        }
+
+        .card-button:hover {
+            background-color: #0b5ed7; /* Slightly darker blue */
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* Specific Icon Colors/Styles (optional but nice) */
+        .chem-icon { color: #10b981; } /* Green */
+        .phy-icon { color: #f97316; } /* Orange */
+        .comm-icon { color: #a855f7; } /* Purple */
+        .draw-icon { color: #ef4444; } /* Red */
+        .comp-icon { color: #3b82f6; } /* Blue */
+        .bio-icon { color: #06b6d4; } /* Cyan */
+
+        /* Responsive Adjustments (for smaller screens) */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links a {
+                margin-left: 0.75rem;
+                padding: 0.3rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Specific adjustments for very narrow mobile screens (less than 380px) */
+        @media (max-width: 380px) {
+            .navbar {
+                flex-direction: column;
+                padding-bottom: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                margin-top: 0.5rem;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .nav-links a {
+                margin-left: 0;
+            }
+            
+            .container {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar --><nav class="navbar">
+        <a href="#" class="logo">JOBA</a>
+        <div class="nav-links">
+            <!-- Register link styled as a primary, filled button --><a href="#" class="nav-btn register-btn">Register</a>
+            <!-- Login link styled as a secondary, outline button --><a href="#" class="nav-btn login-btn">Login</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Container --><div class="container">
+        <div class="header">
+            <h1>Explore Subjects</h1>
+        </div>
+
+        <!-- Subject Cards Grid --><div class="subject-grid">
+            
+            <!-- Card 1: Chemistry --><div class="card">
+                <div class="card-content">
+                    <div class="card-icon chem-icon">🧪</div>
+                    <h2>Chemistry (Chem)</h2>
+                    <p>Study of matter, its properties, how and why substances combine or separate.</p>
+                </div>
+                <a href="chem.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 2: Physics --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon phy-icon">⚛️</div>
+                    <h2>Physics (Phy)</h2>
+                    <p>The science concerned with the nature and properties of matter and energy.</p>
+                </div>
+                <a href="physics.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 3: Communication Skills --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon comm-icon">🗣️</div>
+                    <h2>Communication Skills</h2>
+                    <p>Developing effective verbal, non-verbal, and written communication techniques.</p>
+                </div>
+                <a href="la111.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 4: Engineering Drawing --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon draw-icon">📐</div>
+                    <h2>Eng. Drawing</h2>
+                    <p>Mastering technical drawings and blueprints for mechanical and structural designs.</p>
+                </div>
+                <a href="ed111.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 5: Computer --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon comp-icon">💻</div>
+                    <h2>Computer</h2>
+                    <p>Introduction to programming, hardware, software, and fundamental algorithms.</p>
+                </div>
+                <a href="computer.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 6: Biology --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon bio-icon">🧬</div>
+                    <h2>Biology (Bio)</h2>
+                    <p>The natural science that studies life and living organisms.</p>
+                </div>
+                <a href="biology.html" class="card-button">View Topics</a>
+            </div>
+
+            <!-- Card 7: math --><div class="card">
+                 <div class="card-content">
+                    <div class="card-icon bio-icon">➗</div>
+                    <h2>Math</h2>
+                    <p>De Morgans</p>
+                </div>
+                <a href="math.html" class="card-button">View Topics</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
