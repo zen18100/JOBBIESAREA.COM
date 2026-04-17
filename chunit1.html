@@ -38,6 +38,12 @@
             padding: 3rem 1rem;
         }
 
+        @media (max-width: 600px) {
+            .main-wrapper {
+                padding: 0;
+            }
+        }
+
         /* Container & Card Styling */
         .container-notes {
             max-width: 800px;
@@ -61,7 +67,7 @@
             margin-top: 0.25rem;
         }
         
-        @media (min-width: 640px) { /* sm: */
+        @media (min-width: 600px) { /* sm: */
             h1 {
                 font-size: 3rem; /* sm:text-5xl */
             }
@@ -270,10 +276,346 @@
         .zen:hover {
             background-color: #3341b8;
         }
+
+        nav.navbar {
+            background-color: var(--color-blue-600);
+            padding: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-title {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            font-family: 'Georgia', serif;
+        }
+
+        .navbar-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 0.35rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.15s;
+            display: inline-block;
+        }
+
+        .navbar-back:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
         
+        /* ========== COMPREHENSIVE RESPONSIVE IMPROVEMENTS ========== */
+        
+        /* Font Scaling with clamp() for better responsiveness */
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 3rem) !important;
+        }
+        
+        h2 {
+            font-size: clamp(1.25rem, 4vw, 1.875rem) !important;
+        }
+        
+        h3 {
+            font-size: clamp(1rem, 3vw, 1.5rem) !important;
+        }
+        
+        h4 {
+            font-size: clamp(0.9rem, 2.5vw, 1.125rem) !important;
+        }
+        
+        p {
+            font-size: clamp(0.875rem, 2vw, 1rem) !important;
+        }
+        
+        body, .container-notes, .toc-nav {
+            font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+        }
+        
+        /* Mobile-first padding and margins (480px breakpoint) */
+        @media (max-width: 480px) {
+            .main-wrapper {
+                padding: 1rem 0.5rem !important;
+            }
+            
+            .container-notes {
+                padding: 0.75rem !important;
+                margin: 0 !important;
+                border-radius: 0.25rem;
+            }
+            
+            header {
+                margin-bottom: 1rem !important;
+                padding-bottom: 0.5rem !important;
+            }
+            
+            h1, h2, h3, h4 {
+                margin-top: 0.75rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            p {
+                margin: 0.5rem 0 !important;
+            }
+            
+            .toc-nav {
+                padding: 0.75rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .toc-list {
+                gap: 0.125rem 0.5rem !important;
+            }
+            
+            section {
+                margin-bottom: 1.5rem !important;
+            }
+        }
+        
+        /* Container width responsiveness */
+        @media (max-width: 480px) {
+            .container-notes {
+                width: 95% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+        }
+        
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container-notes {
+                width: 90% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container-notes {
+                width: 85% !important;
+            }
+        }
+        
+        /* Navbar responsive improvements */
+        @media (max-width: 640px) {
+            nav.navbar {
+                padding: 0.75rem 0 !important;
+            }
+            
+            .navbar-container {
+                padding: 0 0.5rem !important;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .navbar-title {
+                font-size: clamp(1rem, 3vw, 1.25rem) !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                flex: 1;
+                min-width: 150px;
+            }
+            
+            .navbar-back {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.8rem !important;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navbar-title {
+                font-size: 1rem !important;
+            }
+        }
+        
+        /* Table improvements for mobile */
+        @media (max-width: 480px) {
+            table {
+                font-size: 0.7rem !important;
+            }
+            
+            th, td {
+                padding: 0.4rem 0.5rem !important;
+            }
+            
+            th {
+                font-size: 0.65rem !important;
+            }
+        }
+        
+        /* List indentation adjustments for mobile */
+        @media (max-width: 480px) {
+            ul.simple-list, ol.numbered-list {
+                margin-left: 1rem !important;
+            }
+            
+            .list-style-none > li {
+                padding-left: 1rem !important;
+            }
+            
+            .toc-list {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        
+        /* Definition/Solution boxes mobile optimization */
+        @media (max-width: 480px) {
+            .solution-box, .definition-box {
+                padding: 0.6rem !important;
+                margin: 0.5rem 0 !important;
+                border-radius: 0.3rem;
+            }
+            
+            .solution-title, .definition-title {
+                font-size: 0.8rem;
+                margin-bottom: 0.4rem !important;
+            }
+        }
+        
+        /* Math blocks responsive */
+        .math-display, .math-block {
+            overflow-x: auto !important;
+            font-size: clamp(0.75rem, 2vw, 0.95rem) !important;
+        }
+        
+        @media (max-width: 480px) {
+            .math-block, .math-display {
+                padding: 0.6rem !important;
+                margin: 0.75rem 0 !important;
+                font-size: 0.7rem !important;
+                white-space: pre-wrap;
+            }
+        }
+        
+        /* Step list responsive */
+        @media (max-width: 480px) {
+            .step-list {
+                padding-left: 0 !important;
+            }
+            
+            .step-list li {
+                margin-bottom: 0.75rem !important;
+                padding-left: 1.75rem !important;
+            }
+            
+            .step-list li::before {
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                font-size: 0.7rem !important;
+            }
+        }
+        
+        /* Zen button responsive */
+        @media (max-width: 480px) {
+            .zen {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.8rem !important;
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+        
+        /* Extra small screens improvements */
+        @media (max-width: 320px) {
+            body {
+                font-size: 0.75rem;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .navbar-title {
+                font-size: 0.9rem;
+            }
+        }
+        
+        .solution-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--color-blue-50);
+            border: 1px solid var(--color-blue-200);
+            border-radius: 0.5rem;
+        }
+        
+        .solution-box .solution-title {
+            font-weight: 600;
+            color: var(--color-blue-800);
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .step-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .step-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: var(--color-blue-600);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+        
+        .step-list {
+            counter-reset: step-counter;
+        }
+
+        .math-block {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            color: var(--color-gray-800);
+            background-color: var(--color-slate-100);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            border-left: 3px solid var(--color-blue-500);
+        }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h2 class="navbar-title">Matter, Measurement, and Fundamentals</h2>
+            <a class="navbar-back" href="chem.html">← Back to Chemistry</a>
+        </div>
+    </nav>
 
     <div class="main-wrapper">
         <div class="container-notes">
@@ -281,13 +623,10 @@
             <!-- Title and Header -->
             <header>
                 
-                    
-                    <a class="zen" style="color: whitesmoke; text-decoration: none; font-weight: 600;" href="chem.html">back</a>
                 
-                
-                <p class="subtitle">CH 110 - Introduction to General Chemistry</p>
+                <p class="subtitle">Introduction to General Chemistry</p>
                 <h1>
-                    Chapter 1: Matter, Measurement, and Fundamentals
+                    Matter, Measurement, and Fundamentals
                 </h1>
                 <p class="description">
                     Core concepts covering the classification and properties of matter, atomic theory, measurement techniques, and the scientific method.
@@ -302,7 +641,7 @@
                     <li><a href="#section-dalton-theory">2. Dalton's Atomic Theory</a></li>
                     <li><a href="#section-classification-matter">3. Classification and Properties of Matter</a></li>
                     <li><a href="#section-measurement">4. The SI System and Measurement</a></li>
-                    <li><a href="#section-dimensional-analysis">5. Dimensional Analysis (The Unit Factor Method)</a></li>
+                    <li><a href="#section-naming-simple-compounds">5. Dimensional Analysis (The Unit Factor Method)</a></li>
                 </ul>
             </nav>
 
@@ -312,56 +651,65 @@
                 <h2>1. The Scientific Method</h2>
 
                 <p>
-                    The Scientific Method is a systematic, logical approach to discovering how things in the universe work. It's the foundation of all chemistry (and science generally), ensuring results are testable, reproducible, and reliable.
+                    The Scientific Method is a systematic, logical approach to research.
                 </p>
 
                 <h3>1.1 Steps of the Method </h3>
                 <ol class="numbered-list">
+                    
                     <li>
-                        <b>Observation:</b> Notice something interesting. This can be qualitative (descriptive) or quantitative (numerical measurement).
-                        <p style="margin-top: 0.25rem; font-style: italic;">Example: The sky is blue (Qualitative). The metal strip weighs 10.0 kg (Quantitative).</p>
-                    </li>
-                    <li>
-                        <b>Hypothesis:</b>this is a testable, possible explanation to an observation.
-                        <p style="margin-top: 0.25rem; font-style: italic;">Example: "If I heat the metal strip, then it will melt at 150."</p>
+                        <b>Define a problem:</b> Notice something interesting.
+                        <p style="margin-top: 0.25rem; font-style: italic;"></p>
                     </li>
                     <li>
                         <b>Experiment:</b> Design and perform an investigation to test the hypothesis. Experiments must be controlled and must produce repeatable data.
-                        <p style="margin-top: 0.25rem; font-style: italic;">Example: Heat the metal strip while measuring its temperature with a thermometer.</p>
+                        <p style="margin-top: 0.25rem; font-style: italic;"></p>
                     </li>
                     <li>
-                        <b>Conclusion/Revision:</b> Analyze the data. If the data supports the hypothesis, you gain confidence. If the data refutes the hypothesis, the hypothesis must be revised and retested.
+                        <b>Observation:</b> Notice what is happening in the experiment and collect data.
+                        <p style="margin-top: 0.25rem; font-style: italic;">The data collected can be <strong><i>Quantitative</i></strong> (Measurable) or <strong><i>Qualitative</i></strong> (properties)</p>
+                    </li>
+                    <li>
+                        <b>Hypothesis:</b> this is a testable, possible explanation to an observation.
+                        <p style="margin-top: 0.25rem; font-style: italic;"></p>
+                    </li>
+                    <li>
+                        <b>Law:</b> is mathematical statement of a relationship between phenomena that is always the same under the <strong>same</strong> conditions
+                    </li>
+                    <li>
+                        <b>Theory:</b> This is a set of tested hypothesis that gives an overall explanation of natural phenomina
+                        <p style="margin-top: 0.25rem; font-style: italic;"></p>
                     </li>
                 </ol>
 
-                <h3>1.2 Laws and Theories</h3>
+                <!--<h3>1.2 Laws and Theories</h3>
                 <ul class="list-style-none">
-                    <li><b>Scientific Law:</b> Describes *what* happens under certain conditions, often with a mathematical formula. It summarizes observations but doesn't explain *why*. (e.g., Law of Conservation of Mass: $\text{Mass}_{\text{reactants}} = \text{Mass}_{\text{products}}$).</li>
-                    <li><b>Scientific Theory:</b> Explains *why* nature behaves the way it does. It is a broad, tested explanation that unifies many related observations and laws. (e.g., Dalton's Atomic Theory explains the Law of Conservation of Mass).</li>
-                </ul>
+                    <li><b>Scientific Law:</b> Describes <strong>what</strong> happens under certain conditions, often with a mathematical formula. It summarizes observations but doesn't explain <strong>why</strong>. (e.g., Law of Conservation of Mass: Mass of reactants = Mass of products).</li>
+                    <li><b>Scientific Theory:</b> Explains <strong>why</strong> nature behaves the way it does. It is a broad, tested explanation that unifies many related observations and laws. (e.g., Dalton's Atomic Theory explains the Law of Conservation of Mass).</li>
+                </ul>-->
             </section>
 
             <!-- Section 2: Dalton's Atomic Theory -->
             <section id="section-dalton-theory" class="mb-12">
-                <h2>2. Dalton's Atomic Theory (1803)</h2>
+                <h2>2. Dalton's Atomic Theory</h2>
 
                 <p>
                     John Dalton's theory was the first comprehensive model describing matter as being composed of tiny, indivisible particles called atoms. It is the basis of modern chemistry.
                 </p>
 
-                <h3>2.1 The Four Main Postulates (Simplified)</h3>
+                <h3>2.1 The Four Main Postulates</h3>
                 <ul class="simple-list">
                     <li>
-                        <b>Matter is made of Atoms:</b> All matter is composed of extremely small, indivisible particles called atoms. (Modern change: Atoms *are* divisible into subatomic particles.)
+                        <b><strong>Matter is made of Atoms:</strong></b>  All matter is composed of extremely small, indivisible particles called atoms. (Modern change: Atoms <strong><u>are</u></strong> divisible into subatomic particles.)
                     </li>
                     <li>
-                        <b>Atoms of the Same Element are Identical:</b> All atoms of a given element are identical in size, mass, and other properties; atoms of different elements differ in these properties. (Modern change: Isotopes exist, which are atoms of the same element with different masses.)
+                        <b><strong>Atoms of the Same Element are Identical:</strong></b> All atoms of a given element are identical in size, mass, and other properties; atoms of different elements differ in these properties. (Modern change: Isotopes exist, which are atoms of the same element with different masses.)
                     </li>
                     <li>
-                        <b>Atoms Cannot Be Created or Destroyed:</b> Atoms cannot be created or destroyed, nor can they be converted into atoms of other elements. Chemical reactions simply rearrange how atoms are grouped. (This explains the **Law of Conservation of Mass**.)
+                        <b><strong>Atoms Cannot Be Created or Destroyed:</strong></b> Atoms cannot be created or destroyed, nor can they be converted into atoms of other elements. Chemical reactions simply rearrange how atoms are grouped. (This explains the <strong><u>Law of Conservation of Mass</u></strong>.)
                     </li>
                     <li>
-                        <b>Compounds are Formed by Combining Atoms:</b> Atoms of different elements combine in simple whole-number ratios to form chemical compounds. (This explains the **Law of Definite Proportions** and the **Law of Multiple Proportions**.)
+                        <b>Compounds are Formed by Combining Atoms:</b> Atoms of different elements combine in simple whole-number ratios to form chemical compounds. (This explains the <strong><u>Law of Definite Proportions</u></strong> and the <strong><u>Law of Multiple Proportions</u></strong>.)
                     </li>
                 </ul>
 
@@ -370,8 +718,8 @@
                     Dalton's theory successfully explained the foundational laws of chemistry:
                 </p>
                 <ul class="list-style-none">
-                    <li><b>Law of Conservation of Mass:</b> Since atoms are not created or destroyed in a reaction (Postulate 3), the total mass of the system remains constant.</li>
-                    <li><b>Law of Definite Proportions:</b> Any compound is formed by specific atoms combined in a fixed ratio (Postulate 4). For example, water is *always* 8 parts oxygen to 1 part hydrogen by mass.</li>
+                    <li><b><strong>Law of Conservation of Mass:</strong></b> Since atoms are not created or destroyed in a reaction (Postulate 3), the total mass of the system remains constant.</li>
+                    <li><b><strong>Law of Definite Proportions:</strong></b> Any compound is formed by specific atoms combined in a fixed ratio (Postulate 4). For example, water is always 8 parts oxygen to 1 part hydrogen by mass.</li>
                 </ul>
             </section>
 
@@ -381,8 +729,14 @@
 
                 <h3>3.1 Classification of Matter</h3>
                 <ul class="list-style-none">
-                    <li><b>Substances:</b> Fixed composition and properties (Elements and Compounds).</li>
-                    <li><b>Mixtures:</b> Variable composition; components retain their properties.
+                    <li><b><strong>Substances:</strong></b> This is a form of matter with fixed composition and properties (Elements and Compounds).
+                        <ul>
+                            <li><b>Element:</b> This is a substance that cannot be separated into simpler substances by chemical means.</li>
+                            <li><b>Compound</b> This is a substance composed of two or more elements chemically united in fixed proportions.</li>
+                        </ul>
+                    </li>
+
+                    <li><b><strong>Mixtures:</strong></b> This is a form of matter with variable composition; components retain their properties.
                         <ul>
                             <li><b>Homogeneous:</b> Uniform mixture (e.g., saltwater).</li>
                             <li><b>Heterogeneous:</b> Non-uniform mixture (e.g., sand and water).</li>
@@ -426,37 +780,17 @@
 
                 <h3>4.2 Derived Units</h3>
                 <ul class="list-style-none">
-                    <li><b>Volume:</b> Derived from length cubed ($\text{m}^3$). Common in lab: Litre (L), where $1 \text{ L} = 1 \text{ dm}^3$ and $1 \text{ mL} = 1 \text{ cm}^3$.</li>
-                    <li><b>Density ($\rho$):</b> Mass per unit volume ($\rho = \text{mass}/\text{volume}$). Units: $\text{g}/\text{mL}$ or $\text{g}/\text{cm}^3$.</li>
+                    <li><b>Volume:</b> Derived from length cubed (m³). Common in lab: Litre (L), where 1L = 1dm³ and 1ml = 1cm³.</li>
+                    <li><b>Density:</b> Mass per unit volume mass/volume. Units: g/ml or g/cm³.</li>
                 </ul>
-            </section>
-
-            <!-- Section 5: Dimensional Analysis -->
-            <section id="section-dimensional-analysis" class="mb-12">
-                <h2>5. Dimensional Analysis (The Unit Factor Method)</h2>
-                
-                <p>
-                    Dimensional analysis is a problem-solving method where units are included in all calculations. It ensures that the final answer has the correct unit by converting the starting unit to the required final unit using conversion factors.
-                </p>
-
-                <h3>5.1 Conversion Factors (Unit Factors)</h3>
-                <p>
-                    A conversion factor is a ratio derived from the equality between two different units. Since the two values in the ratio are equivalent, multiplying by the factor is the same as multiplying by one, which doesn't change the value of the quantity, only its unit.
-                </p>
-                <p style="margin-top: 0.25rem;">
-                    If you know that $1 \text{ inch} = 2.54 \text{ cm}$, you can write two conversion factors:
-                </p>
-                <div class="math-block" style="font-size: 0.95rem;">
-                    $$\frac{1 \text{ inch}}{2.54 \text{ cm}}\quad \text{ or } \quad \frac{2.54 \text{ cm}}{1 \text{ inch}}$$
-                </div>
-
-                <h3>5.2 The Process</h3>
+                <h3>4.3 Conversions</h3>
                 <p>
                     You arrange the conversion factor(s) so that the unwanted (starting) unit cancels out, leaving only the desired (final) unit.
                 </p>
-                <div class="math-block" style="font-size: 0.95rem;">
-                    $$\text{Starting Quantity} \times \frac{\text{Desired Unit}}{\text{Starting Unit}} = \text{Final Quantity (Desired Unit)}$$
+                <div class="solution-box">
+                    Starting Quantity × Desired Unit ÷ Starting Unit = Final Quantity
                 </div>
+                
                 
                 <ol class="numbered-list">
                     <li>Identify the starting unit and the desired final unit.</li>
@@ -465,20 +799,44 @@
                     <li>Perform the multiplication and division.</li>
                 </ol>
 
-                <p class="solution-title" style="font-weight: 700; color: var(--color-gray-900);">Example Problem (Dimensional Analysis):</p>
-                <p style="margin-top: 0.25rem;">How many meters are in $3.5 \text{ miles}$? (Use the conversion: $1 \text{ mile} = 1.609 \text{ km}$ and $1 \text{ km} = 1000 \text{ m}$)</p>
+                <p class="solution-title" style="font-weight: 700; color: var(--color-gray-900);"></p>
+                <p style="margin-top: 0.25rem;"></p>
                 <div class="solution-box">
-                    <p class="solution-title" style="margin-top: 0;">Solution:</p>
-                    <p style="margin-top: 0.25rem; font-size: 0.875rem;">We need to convert $\text{miles} \rightarrow \text{km} \rightarrow \text{m}$.</p>
-                    <div class="math-block">
-                        $$3.5 \text{ miles} \times \frac{1.609 \text{ km}}{1 \text{ mile}} \times \frac{1000 \text{ m}}{1 \text{ km}}$$
-                        
-                        $$\text{Calculation: } 3.5 \times 1.609 \times 1000 = 5631.5$$
-                    </div>
+                    <p class="solution-title">Example Problem (Dimensional Analysis)</p>
+                    <p>How many meters are in 3.5 miles? (Use the conversion: 1 mile = 1.609 km and 1 km = 1000 m)</p>
+                    <ul class="step-list">
+                        <li>We need to convert miles to kilometers (km) to meters (m).</li>
+                        <p>3.5miles × 1.609 km ÷ 1 mile × 1000 m ÷ 1 km</p>
+                    </ul>
                     <p style="margin-top: 0.5rem; color: var(--color-gray-800); font-weight: 700;">
-                        The result is $5631.5 \text{ m}$. (Notice how $\text{miles}$ and $\text{km}$ units cancel out.)
+                        The result is 5631.5 m. (Notice how miles and km units cancel out.)
                     </p>
                 </div>
+            </section>
+
+            <!-- Section 5: naming simple compounds -->
+            <section id="section-naming-simple-compounds" class="mb-12">
+                <h2>5 Naming Simple Compounds</h2>
+                
+                <p>Alright we are going to do this step by step instead, of dumping the rules on you </p>
+
+                <h3>5.1 Ionic Compounds (Metal + Nonmetal)</h3>
+                <p>Most of these are binary compouds ( made of two different elements) </p>
+                <ul>
+                    <li><b>Metal (Cation):</b> naming stays the same.
+                    <li><b>NonMetal (anion):</b> Change ending to "ide".
+                        <p style="margin-top: 0.25rem;">
+                        e.g <b>NaCl</b> <i>Sodium (Na<sup>+</sup>) the metal keeps its name while chlorine (Cl <sup>-</sup>) the Nonemetal changes to chloride adding the <b>"ide"</b> at the end thus becomes <strong>SodiumChloride</strong></i></li>
+                        </p>
+                </ul>
+                <ul>
+                    <li><b>Multiple charges</b> if a compound has multiple charges show with <strong>Roman numerals</strong>.
+                        <p style="margin-top: 0.25rem;">
+                            e.g <b>FeCl<sub>3</sub></b> <i> Iron (Fe<sup>3+</sup>) the metal keeps its name but because of the <sup>3+</sup> it will be (Iron(III)) while chlorine (Cl <sup>-</sup>) the Nonemetal changes to chloride adding the <b>"ide"</b> at the end <strong>iron(III)chloride</strong></i></li>
+                        </p>
+                </ul>
+                <p>some are non-binary ionic compunds (polyatomic compounds)</p>
+                
             </section>
 
         </div>

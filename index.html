@@ -1,370 +1,698 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOBA - Subject Dashboard</title>
-    <style>
-        /* Base styles and variables */
-        :root {
-            --primary-color: #0d6efd; /* A strong blue for highlights */
-            --text-light: #f3f4f6; /* Off-white text */
-            --card-bg: #1f2937; /* Dark gray for cards */
-            --hover-shadow: 0 10px 25px rgba(13, 110, 253, 0.4);
-            --transition-speed: 0.3s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOBBIESAREA</title>
+  <style>
+    :root {
+      --blue:#0d6efd; --blue-dark:#0b5ed7;
+      --card-bg:#1f2937; --text-light:#f3f4f6;
+      --muted:#9ca3af; --speed:0.3s;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 
-        /* Global Reset for better responsiveness */
-        *, *::before, *::after {
-            box-sizing: border-box; 
-        }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background:#000; color:var(--text-light);
+      min-height:100vh; display:flex; flex-direction:column; padding-top:70px;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background-color: #000000; /* Body background black */
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px; /* Space for the fixed navbar */
-        }
+    /* ── Navbar ── */
+    .navbar {
+      position:fixed; inset:0 0 auto 0; height:70px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 2rem;
+      background:rgba(0,0,0,0.85); backdrop-filter:blur(6px);
+      box-shadow:0 2px 10px rgba(0,0,0,0.6); z-index:900;
+    }
+    .logo { font-size:1.6rem; font-weight:700; color:var(--blue); text-decoration:none; letter-spacing:1px; white-space:nowrap; }
 
-        /* --- Navigation Bar (Nav) --- */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-        }
+    /* Auth buttons (shown when logged out) */
+    .nav-links { display:flex; align-items:center; gap:0.5rem; }
+    .nav-links a {
+      padding:0.45rem 1rem; border-radius:0.5rem;
+      font-weight:600; font-size:0.95rem; text-decoration:none;
+      cursor:pointer; transition:all var(--speed); border:2px solid transparent; white-space:nowrap;
+    }
+    .register-btn { background:var(--blue); color:#fff; box-shadow:0 0 10px rgba(13,110,253,0.4); }
+    .register-btn:hover { background:var(--blue-dark); box-shadow:0 0 18px rgba(13,110,253,0.7); transform:translateY(-1px); }
+    .login-btn { background:transparent; border-color:var(--blue)!important; color:var(--blue); }
+    .login-btn:hover { background:var(--blue); color:#000; box-shadow:0 0 18px rgba(13,110,253,0.6); transform:translateY(-1px); }
 
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
+    /* Profile Icon (mobile menu toggle) */
+    .hamburger {
+      display:none;
+      width:38px; height:38px; border-radius:50%;
+      background:var(--card-bg); border:1px solid #374151;
+      cursor:pointer; padding:0; z-index:910;
+      align-items:center; justify-content:center;
+      font-size:1.4rem; color:var(--blue);
+      transition:all var(--speed);
+    }
+    .hamburger:hover { border-color:var(--blue); box-shadow:0 0 10px rgba(13,110,253,0.3); }
+    .hamburger.open { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 0 12px rgba(13,110,253,0.5); }
 
-        /* Base style for nav links that are NOT buttons */
-        .nav-links a:not(.nav-btn) {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            margin-left: 1.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed);
-        }
+    /* Profile button (shown when logged in) */
+    .profile-btn {
+      display:none;
+      align-items:center; gap:0.6rem;
+      background:#1f2937; border:1px solid #374151;
+      border-radius:999px; padding:0.35rem 0.9rem 0.35rem 0.35rem;
+      cursor:pointer; transition:all var(--speed);
+    }
+    .profile-btn:hover { border-color:var(--blue); box-shadow:0 0 12px rgba(13,110,253,0.3); }
+    .profile-avatar {
+      width:34px; height:34px; border-radius:50%;
+      background:var(--blue); color:#fff;
+      font-weight:700; font-size:0.85rem;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; box-shadow:0 0 8px rgba(13,110,253,0.5);
+    }
+    .profile-name { font-size:0.9rem; font-weight:600; color:var(--text-light); }
 
-        .nav-links a:not(.nav-btn):hover {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            box-shadow: 0 0 15px rgba(13, 110, 253, 0.6);
-        }
-        
-        /* Highlighted Button Styles for Register and Login */
-        .nav-links .nav-btn {
-            margin-left: 1.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all var(--transition-speed);
-            border: 2px solid transparent; /* Base border for spacing */
-        }
-        
-        /* Register Button (Primary/Filled) */
-        .nav-links .register-btn {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
-        }
+    /* Logout dropdown */
+    .profile-wrap { position:relative; }
+    .logout-drop {
+      display:none; position:absolute; top:calc(100% + 8px); right:0;
+      background:#1f2937; border:1px solid #374151;
+      border-radius:10px; padding:0.5rem;
+      min-width:140px; box-shadow:0 8px 24px rgba(0,0,0,0.6);
+    }
+    .logout-drop.show { display:block; }
+    .logout-drop button {
+      width:100%; padding:0.55rem 0.75rem;
+      background:none; border:none; color:#fca5a5;
+      font-size:0.9rem; font-weight:600; cursor:pointer;
+      border-radius:6px; text-align:left;
+      transition:background var(--speed);
+    }
+    .logout-drop button:hover { background:#3b0a0a; }
 
-        .nav-links .register-btn:hover {
-            background-color: #0b5ed7; 
-            box-shadow: 0 0 15px rgba(13, 110, 253, 0.8);
-            transform: translateY(-1px);
-        }
+    /* Mobile */
+    @media (max-width:640px) {
+      .hamburger { display:flex; }
+      .nav-links {
+        position:fixed; top:70px; right:0; width:200px;
+        flex-direction:column; align-items:stretch;
+        background:#111; padding:1rem; gap:0.75rem;
+        border-left:1px solid #333; border-bottom:1px solid #333;
+        border-radius:0 0 0 0.75rem;
+        opacity:0; pointer-events:none; transform:translateX(20px);
+        transition:opacity var(--speed), transform var(--speed);
+      }
+      .nav-links.open { opacity:1; pointer-events:all; transform:translateX(0); }
+      .nav-links a { text-align:center; }
+    }
 
-        /* Login Button (Secondary/Outline) */
-        .nav-links .login-btn {
-            background-color: transparent;
-            border-color: var(--primary-color); 
-            color: var(--primary-color);
-        }
+    /* ── Modals ── */
+    .overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
+      z-index:950; align-items:center; justify-content:center; padding:1rem;
+    }
+    .overlay.show { display:flex; }
 
-        .nav-links .login-btn:hover {
-            background-color: var(--primary-color);
-            color: #000000; 
-            box-shadow: 0 0 15px rgba(13, 110, 253, 0.6);
-            transform: translateY(-1px);
-        }
+    .modal {
+      width:100%; max-width:400px;
+      background:#111827; border-radius:14px; padding:2rem 1.75rem;
+      box-shadow:0 8px 36px rgba(0,0,0,0.8);
+      border:1px solid #374151; position:relative;
+      animation:popIn .22s ease;
+    }
+    @keyframes popIn { from { transform:scale(0.94); opacity:0; } to { transform:scale(1); opacity:1; } }
 
+    .modal-close {
+      position:absolute; top:1rem; right:1rem;
+      background:none; border:none; color:var(--muted);
+      font-size:1.2rem; cursor:pointer; transition:color var(--speed);
+    }
+    .modal-close:hover { color:#fff; }
 
-        /* --- Main Content and Cards --- */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-            flex-grow: 1;
-        }
+    .modal-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem; }
+    .modal-header .accent-bar { width:4px; height:28px; border-radius:4px; background:var(--blue); box-shadow:0 0 10px rgba(13,110,253,0.6); }
+    .modal-header h2 { font-size:1.3rem; color:#fff; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+    .m-msg { padding:9px 12px; border-radius:8px; font-size:13px; margin-bottom:1rem; display:none; }
+    .m-msg.success { background:#0c2d6b; color:#93c5fd; display:block; }
+    .m-msg.error   { background:#3b0a0a; color:#fca5a5; display:block; }
 
-        .header h1 {
-            font-size: 2.5rem;
-            color: #ffffff;
-            border-bottom: 2px solid var(--primary-color);
-            display: inline-block;
-            padding-bottom: 0.5rem;
-        }
+    .m-form label {
+      display:block; font-size:11.5px; color:var(--muted);
+      margin-bottom:5px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;
+    }
+    .m-form input, .m-form select {
+      width:100%; padding:10px 12px; border-radius:8px;
+      border:1px solid #374151; background:#1f2937;
+      color:var(--text-light); font-size:14px; margin-bottom:14px;
+      outline:none; transition:border-color var(--speed), box-shadow var(--speed);
+    }
+    .m-form input:focus, .m-form select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
 
-        .subject-grid {
-            /* This property makes the grid automatically responsive */
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            padding-bottom: 3rem;
-        }
+    /* Two-column row for first/last name */
+    .name-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .name-row .field { display:flex; flex-direction:column; }
+    .name-row .field input { width:100%; }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between; /* Ensure content is spaced, pushing the button to the bottom */
-            position: relative; /* Needed for positioning the pseudo-element */
-            overflow: hidden; /* Ensures the pseudo-element doesn't spill out */
-        }
+    .pw-wrap { position:relative; margin-bottom:14px; }
+    .pw-wrap input { margin-bottom:0; padding-right:2.75rem; }
+    .pw-toggle { position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1rem; color:var(--muted); }
+    .pw-toggle:hover { color:#fff; }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 8px; /* Width of the "shadow figure" */
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(13, 110, 253, 0), rgba(13, 110, 253, 0.05), rgba(13, 110, 253, 0)); /* Very subtle fade */
-            border-radius: 1rem 0 0 1rem; /* Match card border radius on left side */
-            transition: background var(--transition-speed), box-shadow var(--transition-speed);
-            pointer-events: none; /* Allows clicks to pass through to the card */
-        }
+    .m-btn {
+      width:100%; padding:11px; border-radius:8px; border:none;
+      background:var(--blue); color:#fff; font-weight:700;
+      font-size:15px; cursor:pointer; margin-top:4px;
+      transition:background var(--speed), box-shadow var(--speed);
+    }
+    .m-btn:hover { background:var(--blue-dark); box-shadow:0 4px 16px rgba(13,110,253,0.5); }
+    .m-hint { font-size:11px; color:var(--muted); text-align:center; margin-top:10px; }
+    .switch-link { text-align:center; margin-top:14px; font-size:13px; color:var(--muted); }
+    .switch-link span { color:var(--blue); cursor:pointer; font-weight:600; text-decoration:underline; }
+    .switch-link span:hover { color:#60a5fa; }
 
-        .card:hover::before {
-            background: linear-gradient(to bottom, rgba(13, 110, 253, 0.2), rgba(13, 110, 253, 0.8), rgba(13, 110, 253, 0.2)); /* Brighter blue on hover */
-            box-shadow: 0 0 15px rgba(13, 110, 253, 0.8); /* Glow effect */
-        }
+    /* ── Main Content ── */
+    .container { width:90%; max-width:1200px; margin:2rem auto; padding:0 0.5rem; flex-grow:1; }
+    .page-header { text-align:center; margin-bottom:2.5rem; }
+    .page-header h1 { font-size:2.25rem; color:#fff; border-bottom:2px solid var(--blue); display:inline-block; padding-bottom:0.4rem; }
+    .ad-banner { background:var(--card-bg); padding:1rem; border-radius:0.5rem; margin-bottom:2rem; text-align:center; border:1px dashed #374151; }
+    .ad-banner p { color:var(--muted); font-size:0.9rem; }
+    .subject-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.75rem; padding-bottom:3rem; }
+    .card {
+      background:var(--card-bg); border-radius:1rem; padding:2rem;
+      text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.5);
+      transition:transform var(--speed), box-shadow var(--speed), border-color var(--speed);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex; flex-direction:column; align-items:center;
+      position:relative; overflow:hidden;
+    }
+    .card::before {
+      content:''; position:absolute; top:0; left:0; width:6px; height:100%;
+      background:linear-gradient(to bottom, transparent, rgba(13,110,253,0.05), transparent);
+      border-radius:1rem 0 0 1rem; transition:background var(--speed); pointer-events:none;
+    }
+    .card:hover::before { background:linear-gradient(to bottom, rgba(13,110,253,0.1), rgba(13,110,253,0.8), rgba(13,110,253,0.1)); }
+    .card:hover { transform:translateY(-8px); box-shadow:0 10px 25px rgba(13,110,253,0.4); border-color:var(--blue); }
+    .card-content { flex-grow:1; }
+    .card-icon { font-size:2.75rem; margin-bottom:0.75rem; }
+    .chem-icon{color:#10b981;} .phy-icon{color:#f97316;} .comm-icon{color:#a855f7;}
+    .draw-icon{color:#ef4444;} .comp-icon{color:#3b82f6;} .bio-icon{color:#06b6d4;}
+    .card h2 { font-size:1.3rem; color:#fff; }
+    .card p  { color:var(--muted); font-size:0.875rem; margin-top:0.4rem; }
+    .card-button {
+      display:block; margin-top:1.5rem; padding:0.7rem 1.25rem;
+      background:var(--blue); color:#fff; text-decoration:none;
+      font-weight:600; border-radius:0.5rem; width:100%; font-size:0.95rem;
+      transition:background var(--speed), box-shadow var(--speed), transform var(--speed);
+    }
+    .card-button:hover { background:var(--blue-dark); box-shadow:0 5px 15px rgba(13,110,253,0.5); transform:translateY(-2px); }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--hover-shadow);
-            border-color: var(--primary-color);
-        }
+    @media (max-width:480px) {
+      .page-header h1 { font-size:1.7rem; }
+      .navbar { padding:0 1rem; }
+      .logo { font-size:1.3rem; }
+    }
 
-        .card-content {
-            flex-grow: 1; /* Allows the content area to expand */
-        }
-        
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            /* Using inline SVG/Emoji for icons as we can't import FontAwesome */
-        }
+    /* ========== COMPREHENSIVE RESPONSIVE IMPROVEMENTS ========== */
+    
+    /* Font Scaling with clamp() */
+    .logo {
+      font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
+    }
+    
+    .page-header h1 {
+      font-size: clamp(1.6rem, 6vw, 2.25rem) !important;
+    }
+    
+    .card h2 {
+      font-size: clamp(1rem, 3vw, 1.3rem) !important;
+    }
+    
+    p, body {
+      font-size: clamp(0.8rem, 2vw, 0.95rem) !important;
+    }
+    
+    /* Mobile-first improvements (max-width: 480px) */
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 0.75rem 1rem !important;
+        justify-content: space-between;
+      }
+      
+      .logo {
+        font-size: 1.2rem !important;
+        text-align: left;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .nav-links a {
+        padding: 0.4rem 0.75rem !important;
+        font-size: 0.8rem !important;
+      }
+      
+      .container {
+        width: 97% !important;
+        margin: 1rem auto !important;
+        padding: 0.5rem !important;
+      }
+      
+      .page-header {
+        margin-bottom: 1.5rem !important;
+      }
+      
+      .page-header h1 {
+        font-size: 1.5rem !important;
+        padding-bottom: 0.3rem;
+      }
+      
+      .ad-banner {
+        padding: 0.75rem !important;
+        margin-bottom: 1rem !important;
+        font-size: 0.75rem;
+      }
+      
+      .subject-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0;
+      }
+      
+      .card {
+        padding: 1rem !important;
+      }
+      
+      .card-icon {
+        font-size: 2rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+      
+      .card h2 {
+        font-size: 1rem !important;
+      }
+      
+      .card p {
+        font-size: 0.75rem !important;
+        margin-top: 0.25rem !important;
+      }
+      
+      .card-button {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        margin-top: 1rem !important;
+      }
+    }
+    
+    /* Tablet improvements (max-width: 768px) */
+    @media (max-width: 768px) {
+      .subject-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      
+      .container {
+        width: 95% !important;
+      }
+      
+      .page-header h1 {
+        font-size: 1.8rem !important;
+      }
+    }
+    
+    /* Extra small screens (max-width: 320px) */
+    @media (max-width: 320px) {
+      body {
+        font-size: 0.7rem;
+      }
+      
+      .logo {
+        font-size: 1rem !important;
+      }
+      
+      .page-header h1 {
+        font-size: 1.3rem !important;
+      }
+      
+      .card {
+        padding: 0.75rem !important;
+      }
+      
+      .card-icon {
+        font-size: 1.5rem !important;
+      }
+      
+      .nav-links a {
+        padding: 0.3rem 0.5rem !important;
+        font-size: 0.7rem !important;
+      }
+    }
+  </style>
+  <!-- Firebase SDK removed - using MongoDB backend instead -->
 
-        .card h2 {
-            font-size: 1.5rem;
-            margin: 0;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .card p {
-            color: #9ca3af;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0; /* Clear margin bottom before button */
-        }
-
-        /* Button Styles for "View Topics" */
-        .card-button {
-            display: inline-block;
-            margin-top: 1.5rem; /* Space above the button */
-            padding: 0.75rem 1.5rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed), transform var(--transition-speed);
-            font-size: 1rem;
-            width: 100%; /* Make button full width within card padding */
-        }
-
-        .card-button:hover {
-            background-color: #0b5ed7; /* Slightly darker blue */
-            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        /* Specific Icon Colors/Styles (optional but nice) */
-        .chem-icon { color: #10b981; } /* Green */
-        .phy-icon { color: #f97316; } /* Orange */
-        .comm-icon { color: #a855f7; } /* Purple */
-        .draw-icon { color: #ef4444; } /* Red */
-        .comp-icon { color: #3b82f6; } /* Blue */
-        .bio-icon { color: #06b6d4; } /* Cyan */
-
-        /* Responsive Adjustments (for smaller screens) */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .nav-links a {
-                margin-left: 0.75rem;
-                padding: 0.3rem 0.75rem;
-                font-size: 0.9rem;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-        }
-        
-        /* Specific adjustments for very narrow mobile screens (less than 380px) */
-        @media (max-width: 380px) {
-            .navbar {
-                flex-direction: column;
-                padding-bottom: 0.5rem;
-                align-items: flex-start;
-            }
-
-            .nav-links {
-                margin-top: 0.5rem;
-                width: 100%;
-                display: flex;
-                justify-content: space-around;
-            }
-
-            .nav-links a {
-                margin-left: 0;
-            }
-            
-            .container {
-                padding: 0.5rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
-    <!-- Navigation Bar --><nav class="navbar">
-        <a href="#" class="logo">JOBA</a>
-        <div class="nav-links">
-            <!-- Register link styled as a primary, filled button --><a href="#" class="nav-btn register-btn">Register</a>
-            <!-- Login link styled as a secondary, outline button --><a href="#" class="nav-btn login-btn">Login</a>
-        </div>
-    </nav>
+<!-- ═══ NAVBAR ══ -->
+<nav class="navbar">
+  <a href="#" class="logo">JOBBIESAREA</a>
 
-    <!-- Main Content Container --><div class="container">
-        <div class="header">
-            <h1>Explore Subjects</h1>
-        </div>
+  <!-- Auth buttons (logged out) -->
+  <div class="nav-links" id="navLinks">
+    <a class="nav-btn register-btn" onclick="openRegister()">Register</a>
+    <a class="nav-btn login-btn"    onclick="openLogin()">Login</a>
+  </div>
 
-        <!-- Subject Cards Grid --><div class="subject-grid">
-            
-            <!-- Card 1: Chemistry --><div class="card">
-                <div class="card-content">
-                    <div class="card-icon chem-icon">🧪</div>
-                    <h2>Chemistry (Chem)</h2>
-                    <p>Study of matter, its properties, how and why substances combine or separate.</p>
-                </div>
-                <a href="chem.html" class="card-button">View Topics</a>
-            </div>
+  <!-- Profile Icon (logged out, mobile) -->
+  <div class="hamburger" id="hamburger" title="Menu">
+    👤
+  </div>
 
-            <!-- Card 2: Physics --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon phy-icon">⚛️</div>
-                    <h2>Physics (Phy)</h2>
-                    <p>The science concerned with the nature and properties of matter and energy.</p>
-                </div>
-                <a href="physics.html" class="card-button">View Topics</a>
-            </div>
-
-            <!-- Card 3: Communication Skills --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon comm-icon">🗣️</div>
-                    <h2>Communication Skills</h2>
-                    <p>Developing effective verbal, non-verbal, and written communication techniques.</p>
-                </div>
-                <a href="la111.html" class="card-button">View Topics</a>
-            </div>
-
-            <!-- Card 4: Engineering Drawing --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon draw-icon">📐</div>
-                    <h2>Eng. Drawing</h2>
-                    <p>Mastering technical drawings and blueprints for mechanical and structural designs.</p>
-                </div>
-                <a href="ed111.html" class="card-button">View Topics</a>
-            </div>
-
-            <!-- Card 5: Computer --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon comp-icon">💻</div>
-                    <h2>Computer</h2>
-                    <p>Introduction to programming, hardware, software, and fundamental algorithms.</p>
-                </div>
-                <a href="computer.html" class="card-button">View Topics</a>
-            </div>
-
-            <!-- Card 6: Biology --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon bio-icon">🧬</div>
-                    <h2>Biology (Bio)</h2>
-                    <p>The natural science that studies life and living organisms.</p>
-                </div>
-                <a href="biology.html" class="card-button">View Topics</a>
-            </div>
-
-            <!-- Card 7: math --><div class="card">
-                 <div class="card-content">
-                    <div class="card-icon bio-icon">➗</div>
-                    <h2>Math</h2>
-                    <p>De Morgans</p>
-                </div>
-                <a href="math.html" class="card-button">View Topics</a>
-            </div>
-
-        </div>
+  <!-- Profile (logged in — replaces both hamburger + auth links) -->
+  <div class="profile-wrap" id="profileWrap" style="display:none;">
+    <div class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+      <div class="profile-avatar" id="profileAvatar"></div>
+      <span class="profile-name" id="profileName"></span>
     </div>
+    <div class="logout-drop" id="logoutDrop">
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
+  </div>
+</nav>
 
+<!-- ═══ REGISTER MODAL ═══ -->
+<div class="overlay" id="regOverlay" onclick="overlayClick(event,'regOverlay')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('regOverlay')">✕</button>
+    <div class="modal-header">
+      <div class="accent-bar"></div>
+      <h2>Create Account</h2>
+    </div>
+    <div class="m-msg" id="regMsg"></div>
+    <form class="m-form" id="regForm" novalidate>
+
+      <!-- Split name row -->
+      <div class="name-row">
+        <div class="field">
+          <label>First name</label>
+          <input id="rFirst" type="text" placeholder="Jane" required />
+        </div>
+        <div class="field">
+          <label>Last name</label>
+          <input id="rLast" type="text" placeholder="Doe" required />
+        </div>
+      </div>
+
+      <label>Phone number</label>
+      <input id="rPhone" type="tel" placeholder="097123 4567" required />
+
+      <label>Email</label>
+      <input id="remail" type="email" placeholder="email@gmail.com" required/>
+
+      <label>Gender</label>
+      <select id="rGender" required>
+        <option value="">Select gender</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+        <option value="other">Other</option>
+        <option value="prefer_not">Prefer not to say</option>
+      </select>
+
+      <label>Password</label>
+      <div class="pw-wrap">
+        <input id="rPass" type="password" placeholder="Min 6 characters" required />
+        <button type="button" class="pw-toggle" onclick="togglePw('rPass',this)">👁️</button>
+      </div>
+
+      <label>Confirm password</label>
+      <div class="pw-wrap">
+        <input id="rPass2" type="password" placeholder="Repeat password" required />
+        <button type="button" class="pw-toggle" onclick="togglePw('rPass2',this)">👁️</button>
+      </div>
+
+      <button type="submit" class="m-btn">Create Account</button>
+      <p class="m-hint">First name · Last name · Phone · Gender · Password required</p>
+    </form>
+    <div class="switch-link">Already have an account? <span onclick="switchTo('login')">Log in</span></div>
+  </div>
+</div>
+
+<!-- ═══ LOGIN MODAL ═══ -->
+<div class="overlay" id="logOverlay" onclick="overlayClick(event,'logOverlay')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('logOverlay')">✕</button>
+    <div class="modal-header">
+      <div class="accent-bar"></div>
+      <h2>Welcome Back</h2>
+    </div>
+    <div class="m-msg" id="logMsg"></div>
+    <form class="m-form" id="logForm" novalidate>
+
+      <label>Email</label>
+      <input id="lUser" type="email" placeholder="email@gmail.com" required />
+
+      <label>Password</label>
+      <div class="pw-wrap">
+        <input id="lPass" type="password" placeholder="Your password" required />
+        <button type="button" class="pw-toggle" onclick="togglePw('lPass',this)">👁️</button>
+      </div>
+
+      <button type="submit" class="m-btn">Login</button>
+      <p class="m-hint">Email &amp; password required</p>
+    </form>
+    <div class="switch-link">Don't have an account? <span onclick="switchTo('register')">Register</span></div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="container">
+  <div class="page-header"><h1>Explore Subjects</h1></div>
+  <div class="ad-banner"><p><i>You can advertise your products here</i></p></div>
+  <div class="subject-grid">
+    <div class="card"><div class="card-content"><div class="card-icon chem-icon">🧪</div><h2>Chemistry (CH 110)</h2><p>Study of matter, its properties, how and why substances combine or separate.</p></div><a href="chem.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon phy-icon">⚛️</div><h2>Physics (PH 110)</h2><p>The science concerned with the nature and properties of matter and energy.</p></div><a href="physics.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon comm-icon">🗣️</div><h2>Communication Skills (LA 111)</h2><p>Developing effective verbal, non-verbal, and written communication techniques.</p></div><a href="la111.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon draw-icon">📐</div><h2>Engineering Drawing (ED 111-211)</h2><p>Mastering technical drawings and blueprints for mechanical and structural designs.</p></div><a href="ed111.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon comp-icon">💻</div><h2>Computer Science (CS 110)</h2><p>Introduction to programming, hardware, software, and fundamental algorithms.</p></div><a href="computer.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon bio-icon">🧬</div><h2>Biology (Bio)</h2><p>The natural science that studies life and living organisms.</p></div><a href="biology.html" class="card-button">View Topics</a></div>
+    <div class="card"><div class="card-content"><div class="card-icon bio-icon">➗</div><h2>Math (MA 110)</h2><p>De Morgan's laws, sets, algebra and more.</p></div><a href="math.html" class="card-button">View Topics</a></div>
+  </div>
+</div>
+
+<script>
+  // ===== MONGODB BACKEND CONFIGURATION =====
+  const API_BASE = 'http://localhost:5000/api';
+  let authToken = localStorage.getItem('authToken');
+  let currentUser = null;
+
+  // Check if user is logged in on page load
+  window.addEventListener('load', () => {
+    if (authToken) {
+      loadUserData();
+    }
+  });
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'm-msg ' + type;
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.className = 'm-msg'; }, 5000);
+  }
+
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+  }
+
+  /* ── Logged-in state ── */
+  function setLoggedIn(user) {
+    currentUser = user;
+    // Hide auth links and hamburger
+    document.getElementById('navLinks').style.display = 'none';
+    document.getElementById('hamburger').style.display = 'none';
+
+    // Show profile pill
+    const wrap = document.getElementById('profileWrap');
+    wrap.style.display = 'flex';
+    wrap.style.alignItems = 'center';
+
+    // Initials avatar
+    const initials = user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase();
+    document.getElementById('profileAvatar').textContent = initials;
+    document.getElementById('profileName').textContent = user.firstName;
+  }
+
+  function logout() {
+    authToken = null;
+    currentUser = null;
+    localStorage.removeItem('authToken');
+    document.getElementById('profileWrap').style.display = 'none';
+    document.getElementById('logoutDrop').classList.remove('show');
+    // Restore auth links
+    document.getElementById('navLinks').style.display = '';
+    document.getElementById('hamburger').style.display = '';
+  }
+
+  function toggleDropdown() {
+    document.getElementById('logoutDrop').classList.toggle('show');
+  }
+
+  async function loadUserData() {
+    try {
+      const response = await fetch(`${API_BASE}/user/current`, {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      if (response.ok) {
+        const user = await response.json();
+        setLoggedIn(user);
+      } else {
+        localStorage.removeItem('authToken');
+        authToken = null;
+      }
+    } catch (error) {
+      console.error('Error loading user:', error);
+    }
+  }
+
+  /* ── Modals ── */
+  function openRegister() { closeNav(); openModal('regOverlay'); }
+  function openLogin()    { closeNav(); openModal('logOverlay'); }
+  function openModal(id)  { document.getElementById(id).classList.add('show'); }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+    if (id==='regOverlay') { document.getElementById('regForm').reset(); document.getElementById('regMsg').className='m-msg'; }
+    if (id==='logOverlay') { document.getElementById('logForm').reset(); document.getElementById('logMsg').className='m-msg'; }
+  }
+  function overlayClick(e, id) { if (e.target===e.currentTarget) closeModal(id); }
+  function switchTo(t) {
+    if (t==='login')    { closeModal('regOverlay'); openModal('logOverlay'); }
+    if (t==='register') { closeModal('logOverlay'); openModal('regOverlay'); }
+  }
+
+  /* ── Validation ── */
+  const phoneRx = /^\+?\d{7,15}$/;
+  function normPhone(v) { return v.replace(/\s+/g, ''); }
+  const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  /* ── Register ── */
+  document.getElementById('regForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    
+    const firstName = document.getElementById('rFirst').value.trim();
+    const lastName  = document.getElementById('rLast').value.trim();
+    const phone     = normPhone(document.getElementById('rPhone').value);
+    const email     = document.getElementById('remail').value.trim();
+    const gender    = document.getElementById('rGender').value;
+    const pass      = document.getElementById('rPass').value;
+    const pass2     = document.getElementById('rPass2').value;
+
+    // Validation
+    if (!firstName||!lastName||!phone||!gender||!pass) { showMsg('regMsg','Please fill all fields.','error'); return; }
+    if (!phoneRx.test(phone))   { showMsg('regMsg','Invalid phone number format.','error'); return; }
+    if (!emailRx.test(email))   { showMsg('regMsg','Invalid email format.','error'); return; }
+    if (pass.length < 6)        { showMsg('regMsg','Password must be at least 6 characters.','error'); return; }
+    if (pass !== pass2)         { showMsg('regMsg','Passwords do not match.','error'); return; }
+
+    try {
+      const response = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName, lastName, email, phone, gender,
+          password: pass
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showMsg('regMsg', data.error || 'Registration failed', 'error');
+        return;
+      }
+
+      // Save token and user data
+      authToken = data.token;
+      localStorage.setItem('authToken', authToken);
+
+      document.getElementById('regForm').reset();
+      showMsg('regMsg','Account created! Logging in... ✅','success');
+      
+      setTimeout(() => {
+        closeModal('regOverlay');
+        setLoggedIn(data.user);
+      }, 1400);
+    } catch (error) {
+      console.error('❌ Registration error:', error);
+      showMsg('regMsg', error.message || 'Registration failed', 'error');
+    }
+  });
+
+  /* ── Login ── */
+  document.getElementById('logForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    
+    const email = document.getElementById('lUser').value.trim();
+    const pass  = document.getElementById('lPass').value;
+
+    if (!email||!pass) { showMsg('logMsg','Please enter your email and password.','error'); return; }
+
+    try {
+      const response = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showMsg('logMsg', data.error || 'Login failed', 'error');
+        return;
+      }
+
+      // Save token and user data
+      authToken = data.token;
+      localStorage.setItem('authToken', authToken);
+
+      showMsg('logMsg','Welcome back, '+data.user.firstName+'! 🎉','success');
+      document.getElementById('logForm').reset();
+      
+      setTimeout(() => {
+        closeModal('logOverlay');
+        setLoggedIn(data.user);
+      }, 1400);
+    } catch (error) {
+      console.error('❌ Login error:', error);
+      showMsg('logMsg', error.message || 'Login failed', 'error');
+    }
+  });
+
+  /* ── Hamburger ── */
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+  });
+  function closeNav() { navLinks.classList.remove('open'); hamburger.classList.remove('open'); }
+
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) closeNav();
+    // Close logout dropdown when clicking outside
+    const profileWrap = document.getElementById('profileWrap');
+    if (!profileWrap.contains(e.target)) document.getElementById('logoutDrop').classList.remove('show');
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key==='Escape') { closeModal('regOverlay'); closeModal('logOverlay'); }
+  });
+</script>
 </body>
 </html>

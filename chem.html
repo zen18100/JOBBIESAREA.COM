@@ -280,6 +280,140 @@
                 width: 100px;
             }
         }
+        
+        /* ========== COMPREHENSIVE RESPONSIVE IMPROVEMENTS ========== */
+        
+        /* Font Scaling with clamp() */
+        .logo {
+            font-size: clamp(1.3rem, 4vw, 1.75rem) !important;
+        }
+        
+        .header h1 {
+            font-size: clamp(1.8rem, 6vw, 2.5rem) !important;
+        }
+        
+        .topic-info h3 {
+            font-size: clamp(1rem, 3vw, 1.3rem) !important;
+        }
+        
+        p, body {
+            font-size: clamp(0.85rem, 2vw, 0.95rem) !important;
+        }
+        
+        /* Search bar responsiveness (480px) */
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.75rem 0.5rem !important;
+                gap: 0.75rem;
+            }
+            
+            .logo {
+                font-size: 1.3rem !important;
+                text-align: center;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .search-container form {
+                width: 100%;
+            }
+            
+            .search-input {
+                width: calc(100% - 60px) !important;
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.85rem;
+            }
+            
+            .search-btn {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Search bar responsiveness (768px) */
+        @media (max-width: 768px) {
+            .search-input {
+                width: 180px !important;
+            }
+        }
+        
+        /* Container and card responsive */
+        @media (max-width: 480px) {
+            .container {
+                width: 97% !important;
+                margin: 1rem auto !important;
+                padding: 0.5rem !important;
+            }
+            
+            .header {
+                margin-bottom: 1rem !important;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            .back-link {
+                margin-bottom: 1rem !important;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Topic items responsive grid */
+        @media (max-width: 480px) {
+            .topic-item {
+                padding: 1rem !important;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            
+            .topic-info h3 {
+                font-size: 1rem !important;
+                margin-bottom: 0.25rem;
+            }
+            
+            .topic-info p {
+                font-size: 0.75rem;
+            }
+            
+            .topic-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .access-button, .question-button {
+                width: 100% !important;
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.8rem !important;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 320px) {
+            body {
+                font-size: 0.75rem;
+            }
+            
+            .logo {
+                font-size: 1.1rem !important;
+            }
+            
+            .header h1 {
+                font-size: 1.2rem !important;
+            }
+            
+            .search-input {
+                width: calc(100% - 50px) !important;
+                padding: 0.3rem 0.5rem !important;
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -321,8 +455,8 @@
             <!-- Topic 2 -->
             <div class="topic-item">
                 <div class="topic-info">
-                    <h3>2. Thermodynamics</h3>
-                    <p>Concepts of heat, energy transfer, enthalpy, entropy, and Gibbs Free Energy.</p>
+                    <h3>2. stoichemistry</h3>
+                    <p>Chemical equations, mole concepts, and calculations.</p>
                 </div>
                 <div class="topic-actions">
                     <a href="#" class="access-button">Start Module</a>
@@ -333,11 +467,11 @@
             <!-- Topic 3 -->
             <div class="topic-item">
                 <div class="topic-info">
-                    <h3>3. Organic Chemistry Fundamentals</h3>
-                    <p>Nomenclature, functional groups, and basic reactions of hydrocarbons.</p>
+                    <h3>3. Reaction to aqueous solutions</h3>
+                    <p>Types of chemical reactions, solubility rules, and net ionic equations.</p>
                 </div>
                 <div class="topic-actions">
-                    <a href="#" class="access-button">Start Module</a>
+                    <a href="chunit3.html" class="access-button">Start Module</a>
                     <a href="#" class="question-button">Questions</a>
                 </div>
             </div>
@@ -345,11 +479,11 @@
             <!-- Topic 4 -->
             <div class="topic-item">
                 <div class="topic-info">
-                    <h3>4. Electrochemistry</h3>
-                    <p>Oxidation, reduction, electrochemical cells, and battery technology.</p>
+                    <h3>4. Gases</h3>
+                    <p>Pressure, Gas Laws, and Diffusion of gases</p>
                 </div>
                 <div class="topic-actions">
-                    <a href="#" class="access-button">Start Module</a>
+                    <a href="chunit4.html" class="access-button">Start Module</a>
                     <a href="#" class="question-button">Questions</a>
                 </div>
             </div>
